@@ -133,7 +133,7 @@ class Landing extends Component {
       <DialogContainer
           id={1}
           visible={visible}
-          title="Please chat responsibly."
+          title="Think before you speak."
           onHide={this.hide}
           modal
           actions={actions}

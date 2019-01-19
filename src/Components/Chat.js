@@ -11,7 +11,6 @@ class Chat extends Component {
             messages: [],
             user_joined: []
         }
-        // https://api-chatalyze.herokuapp.com
         this.socket = io('http://localhost:3001');
         this.socket.emit('SEND_USERNAME', this.props.location.state.username);
         this.socket.on('USER_ADDED', (data) => {
