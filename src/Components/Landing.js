@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactTyped from 'react-typed';
 import '../styles.css';
+import './Landing.css';
 
 const Landing = () => {
-  document.body.style.backgroundColor = '#202424';
 
   return (
     <div>

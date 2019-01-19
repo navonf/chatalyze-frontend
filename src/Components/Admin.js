@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Navbar, Row} from 'reactstrap';
 import { ExpansionList, ExpansionPanel } from 'react-md';
 import { MdKeyboardArrowDown } from "react-icons/md";
+import './Admin.css';
 
 class Admin extends Component {
 
