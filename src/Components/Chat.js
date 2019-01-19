@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Row, Col, Card, CardBody, CardTitle, CardFooter, InputGroup, InputGroupAddon, Button, Input} from 'reactstrap';
+import{Redirect} from 'react-router-dom';
 import io from 'socket.io-client';
 const empty_string = '';
 
@@ -11,7 +12,8 @@ class Chat extends Component {
             messages: [],
             user_joined: [],
             user_disconnected: [],
-            chat_key: ''
+            chat_key: '',
+            redirect: false
         }
         this.socket = io('https://api-chatalyze.herokuapp.com');
         this.socket.emit('SEND_USERNAME', this.props.location.state.username);
@@ -59,6 +61,27 @@ class Chat extends Component {
                 ]
             });
         }
+
+        this.onDisconnect = () => {
+            var arr = this.state.user_disconnected;
+            arr.push(this.props.location.state.username);
+            this.setState({
+                user_disconnected: arr
+            });
+            console.log(this.state.user_disconnected);
+            this.socket.emit('USER_LEAVING', this.props.location.state.username);
+            this.setState({
+                redirect: true
+            })
+        }
+    }
+
+    redirectTo(){
+        if(this.state.redirect){
+            return(
+                <Redirect to='/' />
+            )
+        }
     }
 
     sendTranscript() {
@@ -89,7 +112,15 @@ class Chat extends Component {
                 <Col>
                     <Card>
                         <CardBody>
-                            <CardTitle>Hello, {this.props.location.state.username}</CardTitle>
+                            <CardTitle>
+                            <div>
+                                Hello, {this.props.location.state.username}
+                                <span className="float-right">
+                                <Button outline color="danger" size="sm" onClick={this.onDisconnect}>Logout</Button>
+                                {this.redirectTo()}
+                                </span>
+                            </div>
+                            </CardTitle>
                             <hr />
                             <div className="messages">
                                 {
@@ -101,7 +132,7 @@ class Chat extends Component {
                                         )
                                     })
                                 }
-                                 {
+                                {
                                     this.state.user_disconnected.map((user, index) => {
                                         return(
                                             <div key={index} style={{color:'#ED1137'}}>
