@@ -26,7 +26,7 @@ class Landing extends Component {
       username: this.state.username,
       password: this.state.password
     }
-    fetch('https://api-chatalyze.herokuapp.com/user/add_user',{
+    fetch('https://api-chatalyze.herokuapp.com/user/add_user', {
       method: 'POST',
       body: JSON.stringify(userObj),
       headers: {
@@ -42,16 +42,16 @@ class Landing extends Component {
   }
 
   show = () => {
-    this.setState({ 
-      visible: true 
+    this.setState({
+      visible: true
     });
   };
 
   hide = () => {
-    this.setState({ 
+    this.setState({
       visible: false,
       register: false,
-      register: false 
+      register: false
     });
   };
 
@@ -140,7 +140,7 @@ class Landing extends Component {
           className="login-font"
         >
             {
-              this.state.login ? 
+              this.state.login ?
               <p>
                 <TextField
                   id="floating-center-title"
@@ -166,7 +166,7 @@ class Landing extends Component {
               </p> : null
             }
             {
-              this.state.register ? 
+              this.state.register ?
               <p>
                 <Row form>
                 <Col md={6}>

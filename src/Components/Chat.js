@@ -153,7 +153,7 @@ class Chat extends Component {
                                         }
                                         return(
                                             <div key={index}>
-                                                <span style={{fontSize:"1.5rem"}}>{message.author}</span>:{' '} 
+                                                <span style={{fontSize:"1.5rem"}}>{message.author}</span>:{' '}
                                                 <span class="rounded-pill px-2 pb-1" style={{backgroundColor:`${back_color}`, color:`${text_color}`, fontSize:"1.5rem"}}>{message.message}</span>
                                             </div>
                                         )
