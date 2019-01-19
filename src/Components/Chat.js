@@ -12,7 +12,7 @@ class Chat extends Component {
             user_joined: [],
             chat_key: ''
         }
-        this.socket = io('http://localhost:3001');
+        this.socket = io('https://api-chatalyze.herokuapp.com/');
         this.socket.emit('SEND_USERNAME', this.props.location.state.username);
         this.socket.on('USER_ADDED', (data) => {
             var users = this.state.user_joined
@@ -55,7 +55,7 @@ class Chat extends Component {
             key: this.state.chat_key,
             user: this.props.location.state.username,
             message: this.state.message
-        } 
+        }
         fetch('http://localhost:3001/conversation/update_transcript', {
             method: 'POST',
             body: JSON.stringify(obj),
@@ -102,7 +102,7 @@ class Chat extends Component {
                                         }
                                         return(
                                             <div key={index}>
-                                                <span style={{fontSize:"1.5rem"}}>{message.author}</span>:{' '} 
+                                                <span style={{fontSize:"1.5rem"}}>{message.author}</span>:{' '}
                                                 <span class="rounded-pill px-2 pb-1" style={{backgroundColor:`${back_color}`, color:`${text_color}`, fontSize:"1.5rem"}}>{message.message}</span>
                                             </div>
                                         )
