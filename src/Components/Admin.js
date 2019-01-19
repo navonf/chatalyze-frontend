@@ -14,69 +14,44 @@ class Admin extends Component {
     }
   }
 
+  clearChat(names) {
+    const chatId = {
+      key: names,
+    }
+    console.log("clear");
+
+    fetch('https://api-chatalyze.herokuapp.com/conversation/clear',{
+      method: 'POST',
+      body: JSON.stringify(chatId),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(() => {
+      var currentChatId = this.state.chatData;
+      currentChatId[names] = "";
+      this.setState({chatData : currentChatId});
+    });
+  }
+
   componentDidMount() {
-    // get all conversations.
-    fetch('https://api-chatalyze.herokuapp.com/conversation/get_all_keys')
+    fetch('https://api-chatalyze.herokuapp.com/conversation/get_all_transcript')
       .then((data) => data.json())
       .then((datajson) => {
-        var temp = [];{}
-        for(var key in datajson) {
-          var arr = datajson[key].sort();
-          var newKey = "";
+        this.setState({chatData : datajson});
 
-          while(arr.length !== 0) {
-            newKey = (arr.length > 1) ? newKey + arr.shift() + "&" : newKey + arr.shift();
-          }
-
-          temp[newKey] = {};
-          var tempIds = this.state.chatIds;
-          tempIds.push(newKey);
-
-          this.setState({chatIds : tempIds});
-        }
-        this.setState({chatData : temp});
-        console.log(this.state.chatData)
-      });
-  }
-
-  toggleTranscript = () => {
-    if(this.state.gotTranscript){
-      console.log("YEEY" + this.state.chatData[this.state.theName]);
-
-      return(
-        <p>
-          {JSON.stringify(this.state.chatData)}
-        </p>
-      )
-    }
-  }
-
-  getTranscript(names) {
-    const payload = {
-      "chatId" : names
-    }
-    fetch('https://api-chatalyze.herokuapp.com/conversation/get_single_transcript', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-      .then((data) => data.json())
-      .then((data) => {
-        console.log(names);
-        var tempChatData = {};
-        tempChatData[names] = data;
-        console.log("temp" + JSON.stringify(tempChatData));
-        this.setState({chatData : tempChatData});
-        console.log("now");
-        console.log(this.state.chatData);
-        this.setState({gotTranscript : !this.state.gotTranscript});
-        this.setState({theName : names});
+        var ids = [];
+        for(var key in datajson) ids.push(key);
+        this.setState({chatIds : ids});
       });
   }
 
   render() {
+    const styles = {
+      convoHeader : {
+        fontWeight: 'bold',
+      }
+    }
 
     return(
       <div style={{backgroundColor: "white", height:"100vh"}}>
@@ -87,14 +62,21 @@ class Admin extends Component {
         </Navbar>
         <br />
 
-        <ExpansionPanel footer={null} label="convos" expanderIcon={<MdKeyboardArrowDown size={35} />} >
+        <ExpansionPanel footer={null} headerStyle={styles.convoHeader}
+          label="Conversations" expanderIcon={<MdKeyboardArrowDown size={35} />} >
           <ExpansionList>
             {
               this.state.chatIds.map((names, idx) => {
                 var nameList = names.split("&");
-                return <ExpansionPanel label={`${nameList.shift()} and ${nameList.shift()}`}
-                  key={names} expanderIcon={<MdKeyboardArrowDown size={35} />} onClick={() => this.getTranscript(names)} >
-                  {this.toggleTranscript()}
+                return <ExpansionPanel
+                  headerStyle={styles.convoHeader} key={names}
+                  label={`${nameList.shift()} and ${nameList.shift()}`}
+                  cancelLabel={"CLEAR"} cancelSecondary={true} closeOnCancel={false}
+                  onCancel={() => this.clearChat(names)}
+                  expanderIcon={<MdKeyboardArrowDown size={35} />} >
+                  <span>
+                    {this.state.chatData[names]['transcript']}
+                  </span>
                 </ExpansionPanel>
               })
             }
