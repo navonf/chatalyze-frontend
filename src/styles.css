@@ -1,0 +1,26 @@
+.landing-font {
+  font-family: 'Nunito Sans', sans-serif;
+  color: whitesmoke;
+  font-size: 3.5rem;
+}
+
+.typedjs-font {
+  font-family: 'Nunito Sans', sans-serif;
+  color: whitesmoke;
+  font-size: 2rem;
+}
+
+.landing {
+  text-align: center;
+	position: absolute;
+	top: 45%;
+	right: 0;
+  left: 0;
+  transform: translateY(-45%);
+}
+
+.chatLogo {
+  content: url("./images/chat.png");
+  background-color: transparent;
+  border: none;
+}
