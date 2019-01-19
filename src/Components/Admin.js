@@ -4,6 +4,26 @@ import { ExpansionList, ExpansionPanel } from 'react-md';
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 class Admin extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chatIds : []
+    }
+  }
+
+  componentDidMount() {
+    console.log("mount");
+    // get all conversations.
+    fetch('https://api-chatalyze.herokuapp.com/conversation/get_all_keys')
+      .then((data) => data.json())
+      .then((datajson) => {
+        var temp = [];
+        for(var arr in datajson) {
+          temp.push(datajson[arr]);
+        }
+        this.setState({chatIds : temp});
+      });
+  }
 
   render() {
     return(
@@ -15,8 +35,15 @@ class Admin extends Component {
         </Navbar>
         <br />
 
-        <ExpansionPanel label="convos" expanderIcon={<MdKeyboardArrowDown size={35} />} >
-          <p>what is up</p>
+        <ExpansionPanel footer={null} label="convos" expanderIcon={<MdKeyboardArrowDown size={35} />} >
+          <ExpansionList>
+            <ExpansionPanel label="1" expanderIcon={<MdKeyboardArrowDown size={35} />} >
+            </ExpansionPanel>
+            <ExpansionPanel label="2" expanderIcon={<MdKeyboardArrowDown size={35} />} >
+            </ExpansionPanel>
+            <ExpansionPanel label="3" expanderIcon={<MdKeyboardArrowDown size={35} />} >
+            </ExpansionPanel>
+          </ExpansionList>
         </ExpansionPanel>
 
       </div>
