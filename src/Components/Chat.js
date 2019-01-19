@@ -16,13 +16,13 @@ class Chat extends Component {
                 <Col>
                     <Card>
                         <CardBody>
-                            <CardTitle>Chatalyze</CardTitle>
+                            <CardTitle>Hello, {this.props.location.state.username}</CardTitle>
                         </CardBody>
                         <CardFooter>
                             <InputGroup>
                                 <Input placeholder="What's your message?" />
                                 <InputGroupAddon addonType="append">
-                                    <Button color="primary">Send</Button>
+                                    <Button outline color="primary">Send</Button>
                                 </InputGroupAddon>
                             </InputGroup>
                         </CardFooter>
