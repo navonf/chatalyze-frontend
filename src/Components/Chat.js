@@ -1,15 +1,26 @@
 import React, { Component } from 'react'
-import {Container, Row, Col, Card, CardBody, CardTitle, CardFooter, InputGroup, InputGroupAddon, Button, Input} from 'reactstrap';
+import {Row, Col, Card, CardBody, CardTitle, CardFooter, InputGroup, InputGroupAddon, Button, Input} from 'reactstrap';
 import io from 'socket.io-client';
+const empty_string = '';
 
 class Chat extends Component {
     constructor(props){
         super(props);
         this.state = {
             message: '',
-            messages: []
+            messages: [],
+            user_joined: []
         }
-        this.socket = io('https://api-chatalyze.herokuapp.com');
+        // https://api-chatalyze.herokuapp.com
+        this.socket = io('http://localhost:3001');
+        this.socket.emit('SEND_USERNAME', this.props.location.state.username);
+        this.socket.on('USER_ADDED', (data) => {
+            var users = this.state.user_joined
+            users.push(data);
+            this.setState({
+                user_joined: users
+            });
+        })
         this.socket.on('RECIEVE_MESSAGE', (data) => {
             addMessage(data);
         });
@@ -19,9 +30,8 @@ class Chat extends Component {
                 author: this.props.location.state.username,
                 message: this.state.message
             })
-            this.setState({
-                message: ''
-            })
+            const q = document.getElementById('input_message');
+            q.value = '';
         }
 
         const addMessage = (data) => {
@@ -30,7 +40,7 @@ class Chat extends Component {
                     ...this.state.messages,
                     data
                 ]
-            })
+            });
         }
     }
 
@@ -50,10 +60,28 @@ class Chat extends Component {
                             <hr />
                             <div className="messages">
                                 {
+                                    this.state.user_joined.map((user, index) => {
+                                        return(
+                                            <div key={index} style={{color:'#ED1137'}}>
+                                                {user}{' '}has entered the chat
+                                            </div>
+                                        )
+                                    })
+                                }
+                                {
                                     this.state.messages.map((message, index) => {
+                                        var back_color = '';
+                                        var text_color = ''
+                                        {
+                                            index % 2 === 0 ? back_color = '#1387FD' : back_color = '#E5E5EB'
+                                        }
+                                        {
+                                            index % 2 === 0 ? text_color = 'white' : text_color = 'black'
+                                        }
                                         return(
                                             <div key={index}>
-                                                {message.author}: {message.message}
+                                                <span style={{fontSize:"1.5rem"}}>{message.author}</span>:{' '} 
+                                                <span class="rounded-pill px-2 pb-1" style={{backgroundColor:`${back_color}`, color:`${text_color}`, fontSize:"1.5rem"}}>{message.message}</span>
                                             </div>
                                         )
                                     })
@@ -62,7 +90,7 @@ class Chat extends Component {
                         </CardBody>
                         <CardFooter>
                             <InputGroup>
-                                <Input placeholder="What's your message?" onChange={(e) => this.grabInput(e)}/>
+                                <Input placeholder="What's your message?" id="input_message" onChange={(e) => this.grabInput(e)}/>
                                 <InputGroupAddon addonType="append">
                                     <Button outline color="primary" onClick={this.sendMessage}>Send</Button>
                                 </InputGroupAddon>

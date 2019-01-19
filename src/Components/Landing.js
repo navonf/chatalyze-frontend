@@ -85,7 +85,7 @@ class Landing extends Component {
       username: this.state.username,
       password: this.state.password
     }
-    fetch('https://api-chatalyze.herokuapp.com/user/login', {
+    fetch('http://localhost:3001/user/login', {
       method: 'POST',
       body: JSON.stringify(userObj),
       headers: {
