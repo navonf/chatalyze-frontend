@@ -9,7 +9,8 @@ class Chat extends Component {
         this.state = {
             message: '',
             messages: [],
-            user_joined: []
+            user_joined: [],
+            chat_key: ''
         }
         this.socket = io('http://localhost:3001');
         this.socket.emit('SEND_USERNAME', this.props.location.state.username);
@@ -23,12 +24,18 @@ class Chat extends Component {
         this.socket.on('RECIEVE_MESSAGE', (data) => {
             addMessage(data);
         });
+        this.socket.on('CHAT_KEY', (data) => {
+            this.setState({
+                chat_key: data
+            }, () => console.log('key '+ this.state.chat_key));
+        })
         this.sendMessage = (e) => {
             e.preventDefault();
             this.socket.emit('SEND_MESSAGE', {
                 author: this.props.location.state.username,
                 message: this.state.message
             })
+            this.sendTranscript();
             const q = document.getElementById('input_message');
             q.value = '';
         }
@@ -41,6 +48,22 @@ class Chat extends Component {
                 ]
             });
         }
+    }
+
+    sendTranscript() {
+        var obj = {
+            key: this.state.chat_key,
+            user: this.props.location.state.username,
+            message: this.state.message
+        } 
+        fetch('http://localhost:3001/conversation/update_transcript', {
+            method: 'POST',
+            body: JSON.stringify(obj),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => console.log(res.status));
     }
 
     grabInput = (e) => {
