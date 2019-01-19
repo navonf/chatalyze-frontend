@@ -36,9 +36,11 @@ class Admin extends Component {
   }
 
   expandToggle(names) {
-    var currentChatData = this.state.chatData;
-    currentChatData[names]['expandToggle'] = !currentChatData[names]['expandToggle'];
-    this.setState({chatData : currentChatData});
+    if(this.state.chatData[names]['expandToggle'] != null) {
+      var currentChatData = this.state.chatData;
+      currentChatData[names]['expandToggle'] = !currentChatData[names]['expandToggle'];
+      this.setState({chatData : currentChatData});
+    }
 
     if(this.state.chatData[names]['expandToggle']) {
       var liveTranscript = setInterval(() => {
@@ -50,11 +52,16 @@ class Admin extends Component {
         fetch('https://api-chatalyze.herokuapp.com/conversation/get_all_transcript')
           .then((data) => data.json())
           .then((datajson) => {
-            var tempChatData = this.state.chatData;
-            tempChatData[names]['transcript'] = datajson[names]['transcript'];
-            this.setState({chatData : tempChatData});
-            console.log("updated transcript");
-            console.log(this.state.chatData);
+            if(this.state.chatData[names]['transcript'] != null) {
+              var tempChatData = this.state.chatData;
+              tempChatData[names]['transcript'] = datajson[names]['transcript'];
+              this.setState({chatData : tempChatData});
+              console.log("updated transcript");
+              console.log(this.state.chatData);
+            }
+          })
+          .catch(error => {
+            console.log(error);
           })
 
       }, 1000);
