@@ -2,13 +2,12 @@ import React, { Component } from 'react'
 import {Navbar, Row} from 'reactstrap';
 import { ExpansionList, ExpansionPanel } from 'react-md';
 import { MdKeyboardArrowDown } from "react-icons/md";
-import './Admin.css';
 
 class Admin extends Component {
 
   render() {
     return(
-      <div>
+      <div style={{backgroundColor: "white", height:"100vh"}}>
         <Navbar className="bg-dark fixed-top">
             <h3 className="mx-auto" style={{color: '#F6C344'}}>
                 <span style={{color: "white"}}>Admin</span>

@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactTyped from 'react-typed';
 import '../styles.css';
-import './Landing.css';
 
 const Landing = () => {
 
   return (
-    <div>
+    <div style={{backgroundColor: "#202424", height:"100vh"}}>
       <div class="mx-auto text-center landing">
         <h1 class="mx-auto mb-0 landing-font">chatalyze
           <span><img src="chat.png" height="100"/></span>
