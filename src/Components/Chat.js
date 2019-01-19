@@ -10,9 +10,10 @@ class Chat extends Component {
             message: '',
             messages: [],
             user_joined: [],
+            user_disconnected: [],
             chat_key: ''
         }
-        this.socket = io('http://localhost:3001');
+        this.socket = io('https://api-chatalyze.herokuapp.com');
         this.socket.emit('SEND_USERNAME', this.props.location.state.username);
         this.socket.on('USER_ADDED', (data) => {
             var users = this.state.user_joined
@@ -28,7 +29,17 @@ class Chat extends Component {
             this.setState({
                 chat_key: data
             }, () => console.log('key '+ this.state.chat_key));
-        })
+        });
+        // this.socket.on('WHO_DISCONNECTED', () => {
+        //     this.socket.emit('THIS_PERSON', this.props.location.state.username);
+        // })
+        // this.socket.on('PERSON_DISCONNECTED', data => {
+        //     var users_disc = this.state.user_disconnected;
+        //     users_disc.push(data);
+        //     this.setState({
+        //         user_disconnected: users_disc
+        //     })
+        // })
         this.sendMessage = (e) => {
             e.preventDefault();
             this.socket.emit('SEND_MESSAGE', {
@@ -56,7 +67,7 @@ class Chat extends Component {
             user: this.props.location.state.username,
             message: this.state.message
         } 
-        fetch('http://localhost:3001/conversation/update_transcript', {
+        fetch('https://api-chatalyze.herokuapp.com/conversation/update_transcript', {
             method: 'POST',
             body: JSON.stringify(obj),
             headers: {
@@ -85,7 +96,16 @@ class Chat extends Component {
                                     this.state.user_joined.map((user, index) => {
                                         return(
                                             <div key={index} style={{color:'#ED1137'}}>
-                                                {user}{' '}has entered the chat
+                                                {user}{' '}has entered the chat.
+                                            </div>
+                                        )
+                                    })
+                                }
+                                 {
+                                    this.state.user_disconnected.map((user, index) => {
+                                        return(
+                                            <div key={index} style={{color:'#ED1137'}}>
+                                                {user}{' '}has left the chat.
                                             </div>
                                         )
                                     })
