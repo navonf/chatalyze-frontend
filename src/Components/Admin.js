@@ -118,14 +118,14 @@ class Admin extends Component {
                   onCancel={() => this.clearChat(names)}
                   onExpandToggle={() => this.expandToggle(names)}
                   cancelLabel={"Report"} saveLabel={"Flag and Archive"} cancelSecondary={true} closeOnCancel={false}
-                  expanderIcon={<MdKeyboardArrowDown size={35} />} 
+                  expanderIcon={<MdKeyboardArrowDown size={35} style={{color:"#E44562"}} />} 
                 >
                 {
                   this.state.initiated ? 
                   this.state.chatData[names]['details'].map((msg, index) => {
                       var msg_color = 'black';
                       var msg_weight = '400';
-                      if(msg.sentiment < 0){
+                      if(msg.sentiment <= -.2 && msg.magnitude >= .3){
                         msg_color = 'red';
                         msg_weight = '700';
                       }

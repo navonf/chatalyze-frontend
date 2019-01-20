@@ -84,6 +84,12 @@ class Chat extends Component {
         }
     }
 
+    keyPress = (e) => {
+        if(e.key === 'Enter'){
+            document.getElementById('send-btn').click()
+        }
+     }
+
     sendTranscript() {
         var obj = {
             key: this.state.chat_key,
@@ -163,9 +169,9 @@ class Chat extends Component {
                         </CardBody>
                         <CardFooter>
                             <InputGroup>
-                                <Input placeholder="What's your message?" id="input_message" onChange={(e) => this.grabInput(e)}/>
+                                <Input placeholder="What's your message?" id="input_message" onChange={(e) => this.grabInput(e)} onKeyDown={this.keyPress} />
                                 <InputGroupAddon addonType="append">
-                                    <Button outline color="primary" onClick={this.sendMessage}>Send</Button>
+                                    <Button outline color="primary" id="send-btn" onClick={this.sendMessage}>Send</Button>
                                 </InputGroupAddon>
                             </InputGroup>
                         </CardFooter>
