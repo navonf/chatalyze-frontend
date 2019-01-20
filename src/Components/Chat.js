@@ -171,7 +171,7 @@ class Chat extends Component {
                         </Card>
                     </Col>
                 </Row>
-                <div class="navbar fixed-bottom">
+                <div class="navbar fixed-bottom mb-2">
                     <InputGroup>
                         <Input placeholder="What's your message?" id="input_message" onChange={(e) => this.grabInput(e)} onKeyDown={this.keyPress} />
                         <InputGroupAddon addonType="append">
