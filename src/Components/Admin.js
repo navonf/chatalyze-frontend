@@ -117,7 +117,7 @@ class Admin extends Component {
                   label={`${nameList.shift()} and ${nameList.shift()}`}
                   onCancel={() => this.clearChat(names)}
                   onExpandToggle={() => this.expandToggle(names)}
-                  cancelLabel={"Report"} saveLabel={"Flag and Archive"} cancelSecondary={true} closeOnCancel={false}
+                  cancelLabel={"Report"} saveProps={false} cancelSecondary={true} closeOnCancel={false}
                   expanderIcon={<MdKeyboardArrowDown size={35} style={{color:"#E44562"}} />} 
                 >
                 {
@@ -129,9 +129,11 @@ class Admin extends Component {
                         msg_color = 'red';
                         msg_weight = '700';
                       }
+                      var alert = ''
+                      if(msg.sentiment <= -.5) alert = '❌';
                       return(
                           <div key={index} style={{color:`${msg_color}`, fontWeight:`${msg_weight}`}}>
-                              {msg.chatString}
+                              {alert}{' '}{msg.chatString}
                           </div>
                       );
                   }) : null

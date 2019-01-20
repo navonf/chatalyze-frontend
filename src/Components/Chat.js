@@ -114,70 +114,72 @@ class Chat extends Component {
 
     render() {
         return (
-            <Row>
-                <Col>
-                    <Card>
-                        <CardBody>
-                            <CardTitle>
-                            <div>
-                                Hello, {this.props.location.state.username}
-                                <span className="float-right">
-                                <Button outline color="danger" size="sm" onClick={this.onDisconnect}>Logout</Button>
-                                {this.redirectTo()}
-                                </span>
-                            </div>
-                            </CardTitle>
-                            <hr />
-                            <div className="messages">
-                                {
-                                    this.state.user_joined.map((user, index) => {
-                                        return(
-                                            <div key={index} style={{color:'#ED1137'}}>
-                                                {user}{' '}has entered the chat.
-                                            </div>
-                                        )
-                                    })
-                                }
-                                {
-                                    this.state.user_disconnected.map((user, index) => {
-                                        return(
-                                            <div key={index} style={{color:'#ED1137'}}>
-                                                {user}{' '}has left the chat.
-                                            </div>
-                                        )
-                                    })
-                                }
-                                {
-                                    this.state.messages.map((message, index) => {
-                                        var back_color = '';
-                                        var text_color = ''
-                                        {
-                                            index % 2 === 0 ? back_color = '#1387FD' : back_color = '#E5E5EB'
-                                        }
-                                        {
-                                            index % 2 === 0 ? text_color = 'white' : text_color = 'black'
-                                        }
-                                        return(
-                                            <div key={index}>
-                                                <span style={{fontSize:"1.5rem"}}>{message.author}</span>:{' '}
-                                                <span class="rounded-pill px-2 pb-1" style={{backgroundColor:`${back_color}`, color:`${text_color}`, fontSize:"1.5rem"}}>{message.message}</span>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </CardBody>
-                        <CardFooter>
-                            <InputGroup>
-                                <Input placeholder="What's your message?" id="input_message" onChange={(e) => this.grabInput(e)} onKeyDown={this.keyPress} />
-                                <InputGroupAddon addonType="append">
-                                    <Button outline color="primary" id="send-btn" onClick={this.sendMessage}>Send</Button>
-                                </InputGroupAddon>
-                            </InputGroup>
-                        </CardFooter>
-                    </Card>
-                </Col>
-            </Row>
+            <div style={{overflow: "hidden"}}>
+                <Row>
+                    <Col>
+                        <Card>
+                            <CardBody>
+                                <CardTitle>
+                                <div>
+                                    Hello, {this.props.location.state.username}
+                                    <span className="float-right">
+                                    <Button outline color="danger" size="sm" onClick={this.onDisconnect}>Logout</Button>
+                                    {this.redirectTo()}
+                                    </span>
+                                </div>
+                                </CardTitle>
+                                <hr />
+                                <div className="messages">
+                                    {
+                                        this.state.user_joined.map((user, index) => {
+                                            return(
+                                                <div key={index} style={{color:'#ED1137'}}>
+                                                    {user}{' '}has entered the chat.
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    {
+                                        this.state.user_disconnected.map((user, index) => {
+                                            return(
+                                                <div key={index} style={{color:'#ED1137'}}>
+                                                    {user}{' '}has left the chat.
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    {
+                                        this.state.messages.map((message, index) => {
+                                            var back_color = '';
+                                            var text_color = ''
+                                            {
+                                                index % 2 === 0 ? back_color = '#1387FD' : back_color = '#E5E5EB'
+                                            }
+                                            {
+                                                index % 2 === 0 ? text_color = 'white' : text_color = 'black'
+                                            }
+                                            return(
+                                                <div key={index}>
+                                                    <span style={{fontSize:"1.5rem"}}>{message.author}</span>:{' '}
+                                                    <span class="rounded-pill px-2 pb-1" style={{backgroundColor:`${back_color}`, color:`${text_color}`, fontSize:"1.5rem"}}>{message.message}</span>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+                <div class="navbar fixed-bottom">
+                    <InputGroup>
+                        <Input placeholder="What's your message?" id="input_message" onChange={(e) => this.grabInput(e)} onKeyDown={this.keyPress} />
+                        <InputGroupAddon addonType="append">
+                            <Button outline color="primary" id="send-btn" onClick={this.sendMessage}>Send</Button>
+                        </InputGroupAddon>
+                    </InputGroup>
+                </div>
+            </div>
         )
     }
 }
