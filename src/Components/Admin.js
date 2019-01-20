@@ -115,7 +115,6 @@ class Admin extends Component {
                 <ExpansionPanel
                   headerStyle={styles.convoHeader} key={names}
                   label={`${nameList.shift()} and ${nameList.shift()}`}
-                  onCancel={() => this.clearChat(names)}
                   onExpandToggle={() => this.expandToggle(names)}
                   cancelLabel={"Report"} saveProps={false} cancelSecondary={true} closeOnCancel={false}
                   expanderIcon={<MdKeyboardArrowDown size={35} style={{color:"#E44562"}} />} 

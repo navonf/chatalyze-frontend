@@ -234,8 +234,9 @@ class Landing extends Component {
         </DialogContainer>
         <div className="mx-auto text-center landing" onClick={this.show}>
           <h1 className="mx-auto mb-0 landing-font">chatalyze
-            <span><img src="chat.png" height="100"/></span>
+            <span><img src="chat.png" height="90"/></span>
           </h1>
+          <div className="mx-auto text-center landing-text">
           <ReactTyped
             strings={["an app to prevent bullying", "an app to prevent abuse", "an app to prevent violence", "an app to prevent harassment", "an app to create a better workplace."]}
             typeSpeed={60}
@@ -244,6 +245,7 @@ class Landing extends Component {
             smartBackspace={true}
             className="typedjs-font"
           />
+          </div>
         </div>
       </div>
     )
