@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {Navbar, Row} from 'reactstrap';
 import { ExpansionList, ExpansionPanel } from 'react-md';
 import { MdKeyboardArrowDown } from "react-icons/md";
-
+// onExpandToggle={() => this.expandToggle(names)}
+// onCancel={() => this.clearChat(names)}
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -48,15 +49,15 @@ class Admin extends Component {
           clearInterval(liveTranscript);
         }
 
-        // TODO: do the fetch to get transcript
+        // fetch to get the transcripts in a loop
         fetch('https://api-chatalyze.herokuapp.com/conversation/get_all_transcript')
           .then((data) => data.json())
           .then((datajson) => {
-            if(this.state.chatData[names]['transcript'] != null) {
+            if(this.state.chatData[names]['details'] != null) {
               var tempChatData = this.state.chatData;
-              tempChatData[names]['transcript'] = datajson[names]['transcript'];
+              tempChatData[names]['details'] = datajson[names]['details'];
               this.setState({chatData : tempChatData});
-              console.log("updated transcript");
+              console.log("updated details");
               console.log(this.state.chatData);
             }
           })
@@ -64,7 +65,7 @@ class Admin extends Component {
             console.log(error);
           })
 
-      }, 1000);
+      }, 750);
     }
   }
 
@@ -74,13 +75,15 @@ class Admin extends Component {
       .then((datajson) => {
         for(var key in datajson) datajson[key]['expandToggle'] = false;
         this.setState({chatData : datajson});
+        console.log("yeet");
+        console.log(this.state.chatData);
         var ids = [];
         for(var key in datajson) ids.push(key);
         this.setState({chatIds : ids});
       })
       .catch(error => {
           console.log('Error fetching data.', error);
-      });;
+      });
   }
 
 
@@ -104,16 +107,20 @@ class Admin extends Component {
           <ExpansionList>
             {this.state.chatIds.map((names, idx) => {
               var nameList = names.split("&");
+              console.log("in the compo");
+              console.log(this.state.chatData[names]['details']);
               return <ExpansionPanel
                 headerStyle={styles.convoHeader} key={names}
                 label={`${nameList.shift()} and ${nameList.shift()}`}
                 cancelLabel={"CLEAR"} cancelSecondary={true} closeOnCancel={false}
-                onExpandToggle={() => this.expandToggle(names)}
-                onCancel={() => this.clearChat(names)}
                 expanderIcon={<MdKeyboardArrowDown size={35} />} >
-                <span>
-                  {this.state.chatData[names]['transcript']}
-                </span>
+                  {this.state.chatData[names]['details'].forEach((obj, idx) => {
+                    console.log("deep in");
+                    console.log(obj.chatString);
+                    console.log("sent " + obj.sentiment);
+                    console.log("mag " + obj.magnitude);
+                    return <span>{obj.chatString}</span>
+                  })}
               </ExpansionPanel>
             })}
           </ExpansionList>
