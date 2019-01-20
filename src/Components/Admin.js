@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import {Navbar, Row} from 'reactstrap';
 import { ExpansionList, ExpansionPanel } from 'react-md';
 import { MdKeyboardArrowDown } from "react-icons/md";
-// onExpandToggle={() => this.expandToggle(names)}
-// onCancel={() => this.clearChat(names)}
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -12,6 +10,8 @@ class Admin extends Component {
       chatIds : [],
       gotTranscript : false,
       theName : "",
+      messages: [],
+      initiated: true
     }
   }
 
@@ -74,7 +74,9 @@ class Admin extends Component {
       .then((data) => data.json())
       .then((datajson) => {
         for(var key in datajson) datajson[key]['expandToggle'] = false;
-        this.setState({chatData : datajson});
+        this.setState({
+          chatData : datajson
+        });
         console.log("yeet");
         console.log(this.state.chatData);
         var ids = [];
@@ -103,25 +105,46 @@ class Admin extends Component {
         </Navbar>
         <br />
         <ExpansionPanel footer={null} headerStyle={styles.convoHeader}
-          label="Conversations" expanderIcon={<MdKeyboardArrowDown size={35} />} >
+          label="Conversations" expanded={true} expanderIcon={<MdKeyboardArrowDown size={35} style={{color:"white"}}/>} >
           <ExpansionList>
             {this.state.chatIds.map((names, idx) => {
               var nameList = names.split("&");
               console.log("in the compo");
               console.log(this.state.chatData[names]['details']);
-              return <ExpansionPanel
-                headerStyle={styles.convoHeader} key={names}
-                label={`${nameList.shift()} and ${nameList.shift()}`}
-                cancelLabel={"CLEAR"} cancelSecondary={true} closeOnCancel={false}
-                expanderIcon={<MdKeyboardArrowDown size={35} />} >
-                  {this.state.chatData[names]['details'].forEach((obj, idx) => {
+              return (
+                <ExpansionPanel
+                  headerStyle={styles.convoHeader} key={names}
+                  label={`${nameList.shift()} and ${nameList.shift()}`}
+                  onCancel={() => this.clearChat(names)}
+                  onExpandToggle={() => this.expandToggle(names)}
+                  cancelLabel={"Report"} saveLabel={"Flag and Archive"} cancelSecondary={true} closeOnCancel={false}
+                  expanderIcon={<MdKeyboardArrowDown size={35} />} 
+                >
+                {
+                  this.state.initiated ? 
+                  this.state.chatData[names]['details'].map((msg, index) => {
+                      var msg_color = 'black';
+                      var msg_weight = '400';
+                      if(msg.sentiment < 0){
+                        msg_color = 'red';
+                        msg_weight = '700';
+                      }
+                      return(
+                          <div key={index} style={{color:`${msg_color}`, fontWeight:`${msg_weight}`}}>
+                              {msg.chatString}
+                          </div>
+                      );
+                  }) : null
+                }
+                  {/* {this.state.chatData[names]['details'].forEach((obj, idx) => {
                     console.log("deep in");
                     console.log(obj.chatString);
                     console.log("sent " + obj.sentiment);
                     console.log("mag " + obj.magnitude);
                     return <span>{obj.chatString}</span>
-                  })}
+                  })} */}
               </ExpansionPanel>
+              ); 
             })}
           </ExpansionList>
         </ExpansionPanel>
