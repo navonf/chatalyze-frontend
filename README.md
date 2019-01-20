@@ -1,4 +1,4 @@
-# chatalyze-backend
+# chatalyze-frontend
 
 A chat app that helps prevent abuse, violence and harassment in the workplace.
 
